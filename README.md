@@ -23,3 +23,9 @@ var keys = client.GetKeys();
 //returns List<WireGuardKey>
 ```
 ### 2. Create new key
+Use method `.CreateKey()` for key creating
+#### Parameters
+- name - name of key
+```csharp
+client.CreateKey("Lance's key");
+```
