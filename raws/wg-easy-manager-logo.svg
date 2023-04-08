@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-4 {
+        stroke-width: 5px;
+      }
+
+      .cls-2 {
+        stroke-width: 30px;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5 {
+        fill: none;
+      }
+
+      .cls-3 {
+        stroke-width: 17px;
+      }
+
+      .cls-7 {
+        fill: url(#_Безымянный_градиент_2);
+      }
+
+      .cls-5 {
+        stroke-width: 46px;
+      }
+    </style>
+    <linearGradient id="_Безымянный_градиент_2" data-name="Безымянный градиент 2" x1="405.87" y1="83.38" x2="132.62" y2="398.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a66baa"/>
+      <stop offset=".19" stop-color="#ae5ca4"/>
+      <stop offset=".55" stop-color="#c53794"/>
+      <stop offset="1" stop-color="#e6007e"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-7" x="0" y="0" width="512" height="512" rx="212.98" ry="212.98"/>
+  <circle class="cls-2" cx="301.85" cy="382.63" r="80.62"/>
+  <circle class="cls-2" cx="218.2" cy="250.93" r="72.36"/>
+  <path class="cls-3" d="M140.68,418.49c-1.82,.86-3.77-.41-3.39-2.23,2.08-10.21,9.59-37.41,33.56-61.98,27.78-28.49,20.82,29.8,19.51,39.44-.11,.82-.68,1.56-1.5,1.94l-48.18,22.83Z"/>
+  <path class="cls-5" d="M299.28,289.04c41.99-39.3,46.7-63.08,42.45-77.77-8.02-27.68-49.9-30.07-53.53-59.59-1.94-15.77,7.64-34.32,23.23-43.43,15.42-9.01,31.47-5.72,35.74-4.7"/>
+  <circle class="cls-6" cx="346.54" cy="103.33" r="23.27"/>
+  <path class="cls-1" d="M338.8,122.9c28.76,7.18,42.11,12.25,69.21,19.2,3,.77,6.19,.1,8.62-1.81l3.78-2.98-66.89-19.52"/>
+  <path class="cls-1" d="M361.69,107.72c20.7,6.29,41.39,12.59,62.09,18.88,0,0,1.28-6.5-4.8-16.96-6.08-10.47-4.98,1.55-4.98,1.55l-48.28-11.43s-.13-18.22-9.86-23.55-37.84-23.88-37.84-23.88c0,0,24.1,29.76,34.53,30.12s-15.06-.55-15.06-.55l-21.76-16.55s15.38,22.02,21.39,22.79"/>
+  <path class="cls-4" d="M373.82,111.41s-7.63,.02-8.85,2.89c-2.58,6.07,6.12,12.3,6.12,12.3"/>
+</svg>
