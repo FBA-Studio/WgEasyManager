@@ -16,6 +16,7 @@ namespace WgEasyManager {
         private static readonly string _session_file = "session.wgmanager";
         private static CookieContainer _cookies = new CookieContainer();
         private static CookieCollection cash = new CookieCollection();
+        private static readonly string withoutParametr = "none";
         private static string _password;
         private static string _serverUrl;
 
@@ -96,6 +97,10 @@ namespace WgEasyManager {
         }
         public static bool CreateKey(string name) {
             makeRequest("POST", "api/wireguard/client", "name", name, out var data);
+            return true;
+        }
+        public static bool DeleteKey(string client_id) {
+            makeRequest("DELETE", $"api/wireguard/client/{client_id}", withoutParametr, withoutParametr, out var data);
             return true;
         }
     }
