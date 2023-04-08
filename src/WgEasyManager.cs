@@ -62,6 +62,29 @@ namespace WgEasyManager {
                 return false;
             }
         }
+        private static bool makeRequest(string method, string urlMethod, out byte[] data) {
+            try {
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
+                httpWebRequest.Method = method;
+                httpWebRequest.CookieContainer = _cookies;
+                httpWebRequest.ContentType = header;
+
+                using(HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse()) {
+                    using Stream stream = httpWebResponse.GetResponseStream();
+                    using(MemoryStream memoryStream = new MemoryStream()) {
+                        stream.CopyTo(memoryStream);
+                        data = memoryStream.ToArray();
+                    }
+                    cash = httpWebResponse.Cookies;
+                    updateCookieContainer(cash);
+                }
+                return true;
+            }
+            catch(Exception exc) {
+                data = null;
+                return false;
+            }
+        }
 
         private static void createSession() {
             if(!File.Exists(_session_file)) {
@@ -113,6 +136,20 @@ namespace WgEasyManager {
         }
         public static bool RenameKey(string clientId, string name) {
             makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out var data);
+            return true;
+        }
+        public static bool SetNewIp(string clientId, string address) {
+            makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out var data);
+            return true;
+        }
+        public static bool DownloadConfig(string clientId, string path) {
+            makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
+            File.WriteAllBytes($"{path}/{clientId}.config", data);
+            return true;
+        }
+        public static bool DownloadQrCode(string clientId, string path) {
+            makeRequest("POST", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
+            File.WriteAllBytes($"{path}/{clientId}.svg", data);
             return true;
         }
     }
