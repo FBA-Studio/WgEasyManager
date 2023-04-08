@@ -1,7 +1,7 @@
 <h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="38" align="center">WgEasyManager</h1>
 
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
-![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/Wireguard.jpg)
+![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-banner.png)
 ## Installiation
 ```
 dotnet add package WgEasyManager
