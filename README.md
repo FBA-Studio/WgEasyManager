@@ -1,4 +1,7 @@
 <h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="38" align="center">WgEasyManager</h1>
+<a href="#"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/FBA-Studio/WgEasyManager"></a>
+<a href="#"><img alt="GitHub" src="https://img.shields.io/github/license/FBA-Studio/WgEasyManager"></a>
+<a href="#"><img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/FBA-Studio/WgEasyManager"></a>
 
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-banner.png)
