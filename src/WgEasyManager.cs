@@ -55,8 +55,9 @@ namespace WgEasyManager {
                         writer.Write(postDataString);
                     }
                 }
-                if (HasSsl == false)
+                if (HasSsl == false) {
                     httpWebRequest.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                }
 
                 using(HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse()) {
                     using Stream stream = httpWebResponse.GetResponseStream();
@@ -79,8 +80,9 @@ namespace WgEasyManager {
                 httpWebRequest.CookieContainer = _cookies;
                 httpWebRequest.ContentType = header;
 
-                if (HasSsl == false)
+                if (HasSsl == false) {
                     httpWebRequest.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                }
 
                 using(HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse()) {
                     using Stream stream = httpWebResponse.GetResponseStream();
@@ -118,13 +120,13 @@ namespace WgEasyManager {
             return true;
         }
         private void updateCookieContainer(CookieCollection cookies) {
-            foreach(Cookie cookie in cookies)
+            foreach(Cookie cookie in cookies) {
                 _cookies.Add(cookie);
+            }
         }
-        private bool loging() {
+        private void loging() {
             makeRequest("POST", "api/session", "password", _password, out var temp);
             createSession();
-            return true;
         }
 
         ///<summary>
