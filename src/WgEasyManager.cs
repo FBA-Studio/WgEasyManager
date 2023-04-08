@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.IO;
@@ -93,6 +93,10 @@ namespace WgEasyManager {
         public static List<WireGuardKey> GetKeys() {
             makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
             return(JObject.Parse(data)[""] as JArray).ToObject<List<WireGuardKey>>();
+        }
+        public static bool CreateKey(string name) {
+            makeRequest("POST", "api/wireguard/client", "name", name, out var data);
+            return true;
         }
     }
 }
