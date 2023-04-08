@@ -3,6 +3,7 @@
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-banner.png)
 ## Installiation
+Type this command in project's folder:
 ```
 dotnet add package WgEasyManager
 ```
