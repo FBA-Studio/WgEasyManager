@@ -3,7 +3,7 @@
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/Wireguard.jpg)
 ## Installiation
 ```
-dotnet add package WsEasyManager
+dotnet add package WgEasyManager
 ```
 ## Quick start
 1. Get URL of your server with port
