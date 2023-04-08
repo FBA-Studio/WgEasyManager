@@ -1,11 +1,11 @@
 <h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="38" align="center">WgEasyManager</h1>
 <a href="#"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/FBA-Studio/WgEasyManager"></a>
 <a href="#"><img alt="GitHub" src="https://img.shields.io/github/license/FBA-Studio/WgEasyManager"></a>
-<a href="#"><img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/FBA-Studio/WgEasyManager"></a>
+<a href="#"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/FBA-Studio/WgEasyManager?include_prereleases"></a>
 
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-banner.png)
-## Installiation
+## Installiation(Not published)
 Type this command in project's folder:
 ```
 dotnet add package WgEasyManager
@@ -32,4 +32,13 @@ Use method `.CreateKey()` for key creating
 - name - name of key
 ```csharp
 client.CreateKey("Lance's key");
+```
+Also you can delete key with method `DeleteKey()` with parameter **clientId**
+### 3. Block Key
+Use method `.BlockKey()` for key baning
+#### Parameters:
+- clientId - Client ID in wg-easy
+```csharp
+client.DeleteKey("keyId");
+// Key id you can get in object "WireGuardKey"
 ```
