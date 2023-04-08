@@ -99,8 +99,20 @@ namespace WgEasyManager {
             makeRequest("POST", "api/wireguard/client", "name", name, out var data);
             return true;
         }
-        public static bool DeleteKey(string client_id) {
-            makeRequest("DELETE", $"api/wireguard/client/{client_id}", withoutParametr, withoutParametr, out var data);
+        public static bool DeleteKey(string clientId) {
+            makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out var data);
+            return true;
+        }
+        public static bool UnbanKey(string clientId) {
+            makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out var data);
+            return true;
+        }
+        public static bool BlockKey(string clientId) {
+            makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out var data);
+            return true;
+        }
+        public static bool RenameKey(string clientId, string name) {
+            makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out var data);
             return true;
         }
     }
