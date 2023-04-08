@@ -11,7 +11,7 @@ dotnet add package WgEasyManager
 2. Get password for access
 3. Initialize WgEasyClient:
 ```csharp
-WgEasyClient client = new("sup3rSecr3tPassw0rd", "0.0.0.0:12345");
+private static WgEasyClient client = new("sup3rSecr3tPassw0rd", "0.0.0.0:12345");
 ```
 After Initialize in compiled folder you can see "session.wgmanager". It's cookies for access to your server.
 
