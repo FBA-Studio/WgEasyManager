@@ -1,6 +1,10 @@
 # WgEasyManager
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/Wireguard.jpg)
+## Installiation
+```
+dotnet add package WsEasyManager
+```
 ## Quick start
 1. Get URL of your server with port
 2. Get password for access
