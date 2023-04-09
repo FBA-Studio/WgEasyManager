@@ -30,17 +30,37 @@ var keys = client.GetKeys();
 ```
 ### 2. Create new key
 Use method `.CreateKey()` for key creating
-#### Parameters
+#### Parameters:
 - name - name of key
 ```csharp
 client.CreateKey("Lance's key");
 ```
-Also you can delete key with method `DeleteKey()` with parameter **clientId**
+<i>Also you can delete key with method `DeleteKey()` with parameter <b>clientId</b></i>
 ### 3. Block Key
 Use method `.BlockKey()` for key baning
 #### Parameters:
 - clientId - Client ID in wg-easy
 ```csharp
-client.DeleteKey("keyId");
+client.DeleteKey("xxxx-xxxx-xxxx-xxxx");
 // Key id you can get in object "WireGuardKey"
 ```
+<i>Also you can unblock key with method `UnbanKey()` with parameter <b>clientId</b></i>
+
+### 4. Rename key
+Use method `.RenameKey()` for updating key's name
+#### Parameters:
+- clientId - client Id
+- name - new name for this key
+```csharp
+client.RenameKey("xxxx-xxxx-xxxx-xxxx", "Lance's key");
+```
+
+### 5. Download .config file
+Use method `.DownloadConfig()` for downloading .config file
+#### Parameters:
+- clientId - Client Id for downloading
+- path - path for saving .config file
+```
+client.DownloadConfig("xxxx-xxxx-xxxx-xxxx", "path/to/download");
+```
+<i>Also you can download QR-Code with method `DownloadQrCode()` with parameters <b>clientId</b> and <b>path</b></i>
