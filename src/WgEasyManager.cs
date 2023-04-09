@@ -113,7 +113,7 @@ namespace WgEasyManager {
                 }
                 return true;
             }
-            return true;
+            return false;
         }
         private void updateCookieContainer(CookieCollection cookies) {
             foreach(Cookie cookie in cookies) {
@@ -138,9 +138,9 @@ namespace WgEasyManager {
         ///Create new key
         ///</summary>
         ///<param name="name">Name of new key</param>
-        public bool CreateKey(string name) {
+        public WireGuardKey CreateKey(string name) {
             makeRequest("POST", "api/wireguard/client", "name", name, out var data);
-            return true;
+            return (JObject.Parse(data)).ToObject<WireGuardKey>();
         }
 
         ///<summary>
@@ -148,7 +148,7 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public bool DeleteKey(string clientId) {
-            makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out var data);
+            makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out _);
             return true;
         }
 
@@ -157,7 +157,7 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public bool UnbanKey(string clientId) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out var data);
+            makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out _);
             return true;
         }
 
@@ -166,7 +166,7 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public bool BlockKey(string clientId) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out var data);
+            makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out _);
             return true;
         }
 
@@ -176,7 +176,7 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="name">New name for key</param>
         public bool RenameKey(string clientId, string name) {
-            makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out var data);
+            makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out _);
             return true;
         }
 
@@ -186,7 +186,7 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="address">IP Adress for connection</param>
         public bool SetNewIp(string clientId, string address) {
-            makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out var data);
+            makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out _);
             return true;
         }
 
@@ -200,7 +200,7 @@ namespace WgEasyManager {
             File.WriteAllBytes($"{path}/{clientId}.config", data);
             return true;
         }
-        
+
         ///<summary>
         ///Download QR-Code file for using key in WireGuard Mobile Client
         ///</summary>
