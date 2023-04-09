@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
@@ -31,13 +32,15 @@ namespace WgEasyManager {
             _password = password;
             _serverUrl = serverUrl;
             HasSsl = hasSsl;
-            bool hasSession = loadingSession();
+            Task<bool> loading = loadingSession();
+            Task _loging = loging();
+            bool hasSession = loading.Result;
             if(!hasSession) {
-                loging();
+                _loging.Wait();
             }
         }
 
-        private void makeRequest(string method, string urlMethod, string key, string value, out string data) {
+        private Task makeRequest(string method, string urlMethod, string key, string value, out string data) {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
@@ -70,8 +73,9 @@ namespace WgEasyManager {
             catch(Exception exc) {
                 data = null;
             }
+            return Task.CompletedTask;
         }
-        private void makeRequest(string method, string urlMethod, out byte[] data) {
+        private Task makeRequest(string method, string urlMethod, out byte[] data) {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
@@ -95,17 +99,19 @@ namespace WgEasyManager {
             catch(Exception exc) {
                 data = null;
             }
+            return Task.CompletedTask;
         }
 
-        private void createSession() {
+        private Task createSession() {
             if(!File.Exists(_session_file)) {
                 using(FileStream stream = File.Create(_session_file)) {
                     BinaryFormatter binary = new BinaryFormatter();
                     binary.Serialize(stream, _cookies);
                 }
             }
+            return Task.CompletedTask;
         }
-        private bool loadingSession() {
+        private Task<bool> loadingSession() {
             if(File.Exists(_session_file)) {
                 using(Stream stream = File.OpenRead(_session_file)) {
                     BinaryFormatter formatter = new BinaryFormatter();
@@ -120,17 +126,17 @@ namespace WgEasyManager {
                 _cookies.Add(cookie);
             }
         }
-        private void loging() {
-            makeRequest("POST", "api/session", "password", _password, out var temp);
-            createSession();
+        private async Task loging() {
+            await makeRequest("POST", "api/session", "password", _password, out _);
+            await createSession();
         }
 
         ///<summary>
         ///Get list of keys
         ///</summary>
         ///<returns><see cref="System.Collections.Generic.List"/> with <see cref="T:WgEasyManager.Types.WireGuardKey"/></returns>
-        public List<WireGuardKey> GetKeys() {
-            makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
+        public async Task<List<WireGuardKey>> GetKeys() {
+            await makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
             return(JObject.Parse(data)[""] as JArray).ToObject<List<WireGuardKey>>();
         }
 
@@ -138,8 +144,8 @@ namespace WgEasyManager {
         ///Create new key
         ///</summary>
         ///<param name="name">Name of new key</param>
-        public WireGuardKey CreateKey(string name) {
-            makeRequest("POST", "api/wireguard/client", "name", name, out var data);
+        public async Task<WireGuardKey> CreateKey(string name) {
+            await makeRequest("POST", "api/wireguard/client", "name", name, out var data);
             return (JObject.Parse(data)).ToObject<WireGuardKey>();
         }
 
@@ -147,27 +153,24 @@ namespace WgEasyManager {
         /// Delete key by Client Id
         ///</summary>
         ///<param name="clientId">Id of client</param>
-        public bool DeleteKey(string clientId) {
-            makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out _);
-            return true;
+        public async Task DeleteKey(string clientId) {
+            await makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out _);
         }
 
         ///<summary>
         ///Unblock key by Client Id
         ///</summary>
         ///<param name="clientId">Id of client</param>
-        public bool UnbanKey(string clientId) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out _);
-            return true;
+        public async Task UnbanKey(string clientId) {
+            await makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out _);
         }
 
         ///<summary>
         ///Block key by Client Id
         ///</summary>
         ///<param name="clientId">Id of client</param>
-        public bool BlockKey(string clientId) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out _);
-            return true;
+        public async Task BlockKey(string clientId) {
+            await makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out _);
         }
 
         ///<summary>
@@ -175,9 +178,8 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         ///<param name="name">New name for key</param>
-        public bool RenameKey(string clientId, string name) {
-            makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out _);
-            return true;
+        public async Task RenameKey(string clientId, string name) {
+            await makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out _);
         }
 
         ///<summary>
@@ -185,9 +187,8 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         ///<param name="address">IP Adress for connection</param>
-        public bool SetNewIp(string clientId, string address) {
-            makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out _);
-            return true;
+        public async Task SetNewIp(string clientId, string address) {
+            await makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out _);
         }
 
         ///<summary>
@@ -195,10 +196,9 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         ///<param name="path">Path for saving config file</param>
-        public bool DownloadConfig(string clientId, string path) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
-            File.WriteAllBytes($"{path}/{clientId}.config", data);
-            return true;
+        public async Task DownloadConfig(string clientId, string path) {
+            await makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
+            await File.WriteAllBytesAsync($"{path}/{clientId}.config", data);
         }
 
         ///<summary>
@@ -206,10 +206,9 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         ///<param name="path">Path for saving QR-Code in .svg</param>
-        public bool DownloadQrCode(string clientId, string path) {
-            makeRequest("POST", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
-            File.WriteAllBytes($"{path}/{clientId}.svg", data);
-            return true;
+        public async Task DownloadQrCode(string clientId, string path) {
+            await makeRequest("POST", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
+            await File.WriteAllBytesAsync($"{path}/{clientId}.svg", data);
         }
     }
 }
