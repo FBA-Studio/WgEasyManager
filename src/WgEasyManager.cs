@@ -37,7 +37,7 @@ namespace WgEasyManager {
             }
         }
 
-        private bool makeRequest(string method, string urlMethod, string key, string value, out string data) {
+        private void makeRequest(string method, string urlMethod, string key, string value, out string data) {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
@@ -66,14 +66,12 @@ namespace WgEasyManager {
                     cash = httpWebResponse.Cookies;
                     updateCookieContainer(cash);
                 }
-                return true;
             }
             catch(Exception exc) {
                 data = null;
-                return false;
             }
         }
-        private bool makeRequest(string method, string urlMethod, out byte[] data) {
+        private void makeRequest(string method, string urlMethod, out byte[] data) {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
@@ -93,11 +91,9 @@ namespace WgEasyManager {
                     cash = httpWebResponse.Cookies;
                     updateCookieContainer(cash);
                 }
-                return true;
             }
             catch(Exception exc) {
                 data = null;
-                return false;
             }
         }
 
