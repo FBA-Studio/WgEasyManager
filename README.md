@@ -1,11 +1,11 @@
 <h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="38" align="center">WgEasyManager</h1>
 <a href="#"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/FBA-Studio/WgEasyManager"></a>
-<a href="#"><img alt="GitHub" src="https://img.shields.io/github/license/FBA-Studio/WgEasyManager"></a>
-<a href="#"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/FBA-Studio/WgEasyManager?include_prereleases"></a>
-<a href="#"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/FBA-Studio/WgEasyManager"></a>
-<a href="#"><img alt="Nuget" src="https://img.shields.io/nuget/dt/WgEasyManager"></a>
-<a href="#"><img alt="GitHub issues" src="https://img.shields.io/github/issues/FBA-Studio/WgEasyManager"></a>
-<a href="#"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/FBA_Studio?style=social"></a>
+<a href="https://github.com/FBA-Studio/WgEasyManager/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/FBA-Studio/WgEasyManager"></a>
+<a href="https://github.com/FBA-Studio/WgEasyManager/releases"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/FBA-Studio/WgEasyManager?include_prereleases"></a>
+<a href="https://github.com/FBA-Studio/WgEasyManager/commits/main"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/FBA-Studio/WgEasyManager"></a>
+<a href="https://www.nuget.org/packages/WgEasyManager/"><img alt="Nuget" src="https://img.shields.io/nuget/dt/WgEasyManager"></a>
+<a href="https://github.com/FBA-Studio/WgEasyManager/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/FBA-Studio/WgEasyManager"></a>
+<a href="https://twitter.com/FBA_Studio"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/FBA_Studio?style=social"></a>
 
 ## .NET Library for working with WireGuard keys by [wg-easy](https://github.com/WeeJeWel/wg-easy) API
 ![This Library is helpful for Telegram bots💪🏻](https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-banner.png)
