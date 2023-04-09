@@ -35,6 +35,7 @@ Use method `.CreateKey()` for key creating
 - name - name of key
 ```csharp
 client.CreateKey("Lance's key");
+//return key info in object 'WireGuardKey'
 ```
 <i>Also you can delete key with method `DeleteKey()` with parameter <b>clientId</b></i>
 ### 3. Block Key
