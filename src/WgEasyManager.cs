@@ -32,12 +32,7 @@ namespace WgEasyManager {
             _password = password;
             _serverUrl = serverUrl;
             HasSsl = hasSsl;
-            Task<bool> loading = loadingSession();
-            Task _loging = loging();
-            bool hasSession = loading.Result;
-            if(!hasSession) {
-                _loging.Wait();
-            }
+            loadingSession();
         }
 
         private Task makeRequest(string method, string urlMethod, string key, string value, out string data) {
@@ -67,7 +62,6 @@ namespace WgEasyManager {
                     using StreamReader streamReader = new StreamReader(stream);
                     data = streamReader.ReadToEnd();
                     cash = httpWebResponse.Cookies;
-                    updateCookieContainer(cash);
                 }
             }
             catch(Exception exc) {
@@ -93,7 +87,6 @@ namespace WgEasyManager {
                         data = memoryStream.ToArray();
                     }
                     cash = httpWebResponse.Cookies;
-                    updateCookieContainer(cash);
                 }
             }
             catch(Exception exc) {
@@ -111,24 +104,29 @@ namespace WgEasyManager {
             }
             return Task.CompletedTask;
         }
-        private Task<bool> loadingSession() {
+        private Task loadingSession() {
             if(File.Exists(_session_file)) {
                 using(Stream stream = File.OpenRead(_session_file)) {
                     BinaryFormatter formatter = new BinaryFormatter();
                     _cookies = (CookieContainer)formatter.Deserialize(stream);
                 }
-                return true;
             }
-            return false;
+            return Task.CompletedTask;
         }
-        private void updateCookieContainer(CookieCollection cookies) {
+        private Task updateCookieContainer(CookieCollection cookies) {
             foreach(Cookie cookie in cookies) {
                 _cookies.Add(cookie);
             }
+            return Task.CompletedTask;
         }
-        private async Task loging() {
-            await makeRequest("POST", "api/session", "password", _password, out _);
-            await createSession();
+
+        public async Task LoginToServerIfNeeded() {
+            await makeRequest("GET", "api/session", withoutParametr, withoutParametr, out var data);
+            if(!(JObject.Parse(data)).ToObject<LoginStatus>().Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
         }
 
         ///<summary>
