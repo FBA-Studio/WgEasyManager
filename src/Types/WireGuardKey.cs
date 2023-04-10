@@ -36,7 +36,7 @@ namespace WgEasyManager.Types {
 
         ///<value>Latest using</value>
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime LatestHandshakeAt;
+        public DateTime? LatestHandshakeAt;
 
         ///<value></value>
         public long TransferRx;
