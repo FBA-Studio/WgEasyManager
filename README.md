@@ -1,4 +1,4 @@
-<h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="38" align="center">WgEasyManager</h1>
+<h1><img src="https://github.com/FBA-Studio/WgEasyManager/blob/main/raws/wg-easy-manager-logo.svg" height="33" align="center">WgEasyManager</h1>
 <a href="#"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/FBA-Studio/WgEasyManager"></a>
 <a href="https://github.com/FBA-Studio/WgEasyManager/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/FBA-Studio/WgEasyManager"></a>
 <a href="https://github.com/FBA-Studio/WgEasyManager/releases"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/FBA-Studio/WgEasyManager?include_prereleases"></a>
