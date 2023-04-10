@@ -43,14 +43,13 @@ namespace WgEasyManager {
                 httpWebRequest.CookieContainer = _cookies;
                 httpWebRequest.ContentType = header;
 
-                if(key != "none") {
-                    var dict = new Dictionary<string,string>();
+                if (key != "none") {
+                    var dict = new Dictionary<string, string>();
                     dict.Add(key, value);
-                    string postDataString = string.Join("&", dict.Select(x => Uri.EscapeDataString(x.Key) + "=" + Uri.EscapeDataString(x.Value)));
+                    string postDataString = string.Join("&", dict.Select(x => "{\"" + Uri.EscapeDataString(x.Key) + "\":" + "\"" + Uri.EscapeDataString(x.Value) + "\"}"));
                     httpWebRequest.ContentLength = postDataString.Length;
 
-                    using (StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream()))
-                    {
+                    using (StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream())) {
                         writer.Write(postDataString);
                     }
                 }
@@ -58,14 +57,14 @@ namespace WgEasyManager {
                     httpWebRequest.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
                 }
 
-                using(HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse()) {
+                using (HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse()) {
                     using Stream stream = httpWebResponse.GetResponseStream();
                     using StreamReader streamReader = new StreamReader(stream);
                     data = streamReader.ReadToEnd();
                     cash = httpWebResponse.Cookies;
                 }
             }
-            catch(Exception exc) {
+            catch (Exception exc) {
                 data = null;
             }
             return Task.CompletedTask;
@@ -140,7 +139,7 @@ namespace WgEasyManager {
         ///<returns><see cref="System.Collections.Generic.List"/> with <see cref="T:WgEasyManager.Types.WireGuardKey"/></returns>
         public async Task<List<WireGuardKey>> GetKeys() {
             await makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
-            return(JObject.Parse(data)[""] as JArray).ToObject<List<WireGuardKey>>();
+            return JArray.Parse(data).ToObject<List<WireGuardKey>>();
         }
 
         ///<summary>
