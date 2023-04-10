@@ -127,6 +127,10 @@ namespace WgEasyManager {
             }
             return Task.CompletedTask;
         }
+        private async Task<LoginStatus> checkAuthrization() {
+            await makeRequest("GET", "api/session", withoutParametr, withoutParametr, out var data);
+            return (JObject.Parse(data)).ToObject<LoginStatus>();
+        }
 
         ///<summary>
         /// Login to API Server with session check.
