@@ -103,6 +103,13 @@ namespace WgEasyManager {
                     binary.Serialize(stream, _cookies);
                 }
             }
+            else {
+                File.Delete(_session_file);
+                using(FileStream stream = File.Create(_session_file)) {
+                    BinaryFormatter binary = new BinaryFormatter();
+                    binary.Serialize(stream, _cookies);
+                }
+            }
             return Task.CompletedTask;
         }
         private Task loadingSession() {
@@ -138,6 +145,12 @@ namespace WgEasyManager {
         ///</summary>
         ///<returns><see cref="System.Collections.Generic.List"/> with <see cref="T:WgEasyManager.Types.WireGuardKey"/></returns>
         public async Task<List<WireGuardKey>> GetKeys() {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
             return JArray.Parse(data).ToObject<List<WireGuardKey>>();
         }
@@ -147,6 +160,12 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="name">Name of new key</param>
         public async Task<WireGuardKey> CreateKey(string name) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("POST", "api/wireguard/client", "name", name, out var data);
             return (JObject.Parse(data)).ToObject<WireGuardKey>();
         }
@@ -156,6 +175,12 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public async Task DeleteKey(string clientId) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("DELETE", $"api/wireguard/client/{clientId}", withoutParametr, withoutParametr, out _);
         }
 
@@ -164,6 +189,12 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public async Task UnbanKey(string clientId) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("POST", $"api/wireguard/client/{clientId}/enable", withoutParametr, withoutParametr, out _);
         }
 
@@ -172,6 +203,12 @@ namespace WgEasyManager {
         ///</summary>
         ///<param name="clientId">Id of client</param>
         public async Task BlockKey(string clientId) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("POST", $"api/wireguard/client/{clientId}/disable", withoutParametr, withoutParametr, out _);
         }
 
@@ -181,6 +218,12 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="name">New name for key</param>
         public async Task RenameKey(string clientId, string name) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("PUT", $"api/wireguard/client/{clientId}/name/", "name", name, out _);
         }
 
@@ -190,6 +233,12 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="address">IP Adress for connection</param>
         public async Task SetNewIp(string clientId, string address) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("PUT", $"api/wireguard/client/{clientId}/address/", "address", address, out _);
         }
 
@@ -199,6 +248,12 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="path">Path for saving config file</param>
         public async Task DownloadConfig(string clientId, string path) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
             await File.WriteAllBytesAsync($"{path}/{clientId}.config", data);
         }
@@ -209,6 +264,12 @@ namespace WgEasyManager {
         ///<param name="clientId">Id of client</param>
         ///<param name="path">Path for saving QR-Code in .svg</param>
         public async Task DownloadQrCode(string clientId, string path) {
+            var status = await checkAuthrization();
+            if(!status.Authenticated) {
+                await makeRequest("POST", "api/session", "password", _password, out _);
+                await updateCookieContainer(cash);
+                await createSession();
+            }
             await makeRequest("POST", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
             await File.WriteAllBytesAsync($"{path}/{clientId}.svg", data);
         }
