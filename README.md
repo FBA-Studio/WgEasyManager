@@ -22,6 +22,13 @@ dotnet add package WgEasyManager
 private static WgEasyClient client = new("sup3rSecr3tPassw0rd", "0.0.0.0:12345", true);
 //if your server hasn't SSL - set false
 ```
+4. Login to server:
+```csharp
+static async Task Main(){
+    await client.LoginToServerIfNeeded();
+    //some code...
+}
+```
 After Initialize in compiled folder you can see "session.wgmanager". It's cookies for access to your server.
 
 ## Editing Keys
