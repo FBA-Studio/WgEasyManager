@@ -39,6 +39,7 @@ namespace WgEasyManager {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
+                httpWebRequest.ProtocolVersion = HttpVersion.Version11;
                 httpWebRequest.CookieContainer = _cookies;
                 httpWebRequest.ContentType = header;
 
@@ -73,6 +74,7 @@ namespace WgEasyManager {
             try {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/" + urlMethod);
                 httpWebRequest.Method = method;
+                httpWebRequest.ProtocolVersion = HttpVersion.Version11;
                 httpWebRequest.CookieContainer = _cookies;
                 httpWebRequest.ContentType = header;
 
@@ -120,6 +122,9 @@ namespace WgEasyManager {
             return Task.CompletedTask;
         }
 
+        ///<summary>
+        /// Login to API Server with session check.
+        ///</summary>
         public async Task LoginToServerIfNeeded() {
             await makeRequest("GET", "api/session", withoutParametr, withoutParametr, out var data);
             if(!(JObject.Parse(data)).ToObject<LoginStatus>().Authenticated) {
