@@ -146,9 +146,6 @@ namespace WgEasyManager {
                 throw new WgEasyException("Unknown exception occured. See inner Exception for more information");
         }
 
-        public ServerInfo GetServerInfo() {
-            return new ServerInfo() { Url = _serverUrl, Password = _password, Cookies = _cookies };
-        }
         ///<summary>
         /// Login to API Server with session check.
         ///</summary>
