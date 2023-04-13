@@ -9,6 +9,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+using WgEasyManager.Exceptions;
 using WgEasyManager.Types;
 
 namespace WgEasyManager {
@@ -20,7 +21,7 @@ namespace WgEasyManager {
         private static readonly string withoutParametr = "none";
         private static string _password = "";
         private static string _serverUrl = "";
-        private static bool HasSsl;
+        public bool HasSsl;
 
         ///<summary>
         /// Welcome to WgEasyClient!
@@ -66,6 +67,7 @@ namespace WgEasyManager {
             }
             catch (Exception exc) {
                 data = null;
+                throwApiException(exc);
             }
             return Task.CompletedTask;
         }
@@ -92,6 +94,7 @@ namespace WgEasyManager {
             }
             catch(Exception exc) {
                 data = null;
+                throwApiException(exc);
             }
             return Task.CompletedTask;
         }
@@ -132,6 +135,20 @@ namespace WgEasyManager {
             return (JObject.Parse(data)).ToObject<LoginStatus>();
         }
 
+        private static void throwApiException(Exception exception) {
+            if (exception.Message == "The SSL connection could not be established, see inner exception.")
+                throw new WgEasyException("Your Wg-Easy Server hasn't SSL connection, please set hasSsl = false", exception);
+            else if (exception.Message.Contains($"({_serverUrl}:443)"))
+                throw new WgEasyException("Wg-Easy server not found. Please check you URL and port");
+            else if(exception.Message.Contains("(404) Not Found"))
+                throw new WgEasyException("Server returned 404: Key by ClientId not found or");
+            else
+                throw new WgEasyException("Unknown exception occured. See inner Exception for more information");
+        }
+
+        public ServerInfo GetServerInfo() {
+            return new ServerInfo() { Url = _serverUrl, Password = _password, Cookies = _cookies };
+        }
         ///<summary>
         /// Login to API Server with session check.
         ///</summary>
@@ -148,7 +165,7 @@ namespace WgEasyManager {
         ///Get list of keys
         ///</summary>
         ///<returns><see cref="System.Collections.Generic.List"/> with <see cref="T:WgEasyManager.Types.WireGuardKey"/></returns>
-        public async Task<List<WireGuardKey>> GetKeys() {
+        public async Task<List<WireGuardKey>?> GetKeys() {
             var status = await checkAuthrization();
             if(!status.Authenticated) {
                 await makeRequest("POST", "api/session", "password", _password, out _);
@@ -156,6 +173,8 @@ namespace WgEasyManager {
                 await createSession();
             }
             await makeRequest("GET", "api/wireguard/client", "none", "none", out var data);
+            if(string.IsNullOrEmpty(data))
+                return null;
             return JArray.Parse(data).ToObject<List<WireGuardKey>>();
         }
 
@@ -259,7 +278,7 @@ namespace WgEasyManager {
                 await createSession();
             }
             await makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
-            await File.WriteAllBytesAsync($"{path}/{clientId}.config", data);
+            await File.WriteAllBytesAsync($"{path}/{clientId}.conf", data);
         }
 
         ///<summary>
