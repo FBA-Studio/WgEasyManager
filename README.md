@@ -29,7 +29,7 @@ static async Task Main(){
     //some code...
 }
 ```
-After Initialize in compiled folder you can see "session.wgmanager". It's cookies for access to your server.
+After Initialize in folder "wg-sessions" you can see "ip/port.wgmanager". It's cookies for access to your server.
 
 ## Editing Keys
 ### 1. Get Keys
