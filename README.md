@@ -19,7 +19,7 @@ dotnet add package WgEasyManager
 2. Get password for access
 3. Initialize WgEasyClient:
 ```csharp
-private static WgEasyClient client = new("sup3rSecr3tPassw0rd", "0.0.0.0:12345", true);
+private static WgEasyClient client = new("0.0.0.0:12345", "sup3rSecr3tPassw0rd", true);
 //if your server hasn't SSL - set false
 ```
 4. Login to server:
