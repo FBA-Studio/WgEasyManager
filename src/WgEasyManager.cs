@@ -15,7 +15,7 @@ using WgEasyManager.Types;
 namespace WgEasyManager {
     public class WgEasyClient {
         private static readonly string header = "application/json";
-        private static readonly string _session_file = "session.wgmanager";
+        private static string _session_file = "session.wgmanager";
         private static CookieContainer _cookies = new CookieContainer();
         private static CookieCollection cash = new CookieCollection();
         private static readonly string withoutParametr = "none";
@@ -33,6 +33,7 @@ namespace WgEasyManager {
             _password = password;
             _serverUrl = serverUrl;
             HasSsl = hasSsl;
+            _session_file = "wg-sessions/" + serverUrl + "_server" + ".wgmanager";
             loadingSession();
         }
 
@@ -141,7 +142,7 @@ namespace WgEasyManager {
             else if (exception.Message.Contains($"({_serverUrl}:443)"))
                 throw new WgEasyException("Wg-Easy server not found. Please check you URL and port");
             else if(exception.Message.Contains("(404) Not Found"))
-                throw new WgEasyException("Server returned 404: Key by ClientId not found or");
+                throw new WgEasyException("Server returned 404: Key by ClientId not found");
             else
                 throw new WgEasyException("Unknown exception occured. See inner Exception for more information");
         }
