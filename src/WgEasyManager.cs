@@ -31,10 +31,22 @@ namespace WgEasyManager {
         ///<param name="hasSsl">If you have SSL - we recommend set <b>true</b>, false - if you hasn't SSL</param>
         public WgEasyClient(string serverUrl, string password, bool hasSsl) {
             _password = password;
-            _serverUrl = serverUrl;
+            _serverUrl = serverUrl.ToLower();
             HasSsl = hasSsl;
-            _session_file = "wg-sessions/" + serverUrl + "_server" + ".wgmanager";
+            _session_file = "wg-sessions/" + ConvertToUrlOrIp(_serverUrl) + "_server" + ".wgmanager";
             loadingSession();
+        }
+
+        private string ConvertToUrlOrIp(string url) {
+            if(url.StartsWith("https://") || url.StartsWith("http://")) {
+                if(url.StartsWith("https://")) {
+                    return url.Split("https://")[1];
+                }
+                else {
+                    return url.Split("http://")[1];
+                }
+            }
+            return url;
         }
 
         private Task makeRequest(string method, string urlMethod, string key, string value, out string data) {
@@ -101,27 +113,24 @@ namespace WgEasyManager {
         }
 
         private Task createSession() {
+            if(!Directory.Exists("wg-sessions"))
+                Directory.CreateDirectory("wg-sessions");
+
             if(!File.Exists(_session_file)) {
-                using(FileStream stream = File.Create(_session_file)) {
-                    var session = JsonConvert.SerializeObject(_cookies);
-                    File.WriteAllText(_session_file, session);
-                }
+                File.Create(_session_file).Dispose();
+                var session = JsonConvert.SerializeObject(_cookies.GetCookies(new Uri(_serverUrl)));
+                File.WriteAllText(_session_file, session);
             }
             else {
-                File.Delete(_session_file);
-                using(FileStream stream = File.Create(_session_file)) {
-                    var session = JsonConvert.SerializeObject(_cookies);
-                    File.WriteAllText(_session_file, session);
-                }
+                var session = JsonConvert.SerializeObject(_cookies.GetCookies(new Uri(_serverUrl)));
+                File.WriteAllText(_session_file, session);
             }
             return Task.CompletedTask;
         }
         private Task loadingSession() {
             if(File.Exists(_session_file)) {
-                using(Stream stream = File.OpenRead(_session_file)) {
-                    var session = File.ReadAllText(_session_file);
-                    _cookies = JsonConvert.DeserializeObject<CookieContainer>(session);
-                }
+                var session = File.ReadAllText(_session_file);
+                updateCookieContainer(JsonConvert.DeserializeObject<CookieCollection>(session));
             }
             return Task.CompletedTask;
         }
@@ -275,7 +284,9 @@ namespace WgEasyManager {
                 await updateCookieContainer(cash);
                 await createSession();
             }
-            await makeRequest("POST", $"api/wireguard/client/{clientId}/configuration", out var data);
+            if(!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            await makeRequest("GET", $"api/wireguard/client/{clientId}/configuration", out var data);
             await File.WriteAllBytesAsync($"{path}/{clientId}.conf", data);
         }
 
@@ -291,7 +302,9 @@ namespace WgEasyManager {
                 await updateCookieContainer(cash);
                 await createSession();
             }
-            await makeRequest("POST", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
+            await makeRequest("GET", $"api/wireguard/client/{clientId}/qrcode.svg", out var data);
+            if(!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             await File.WriteAllBytesAsync($"{path}/{clientId}.svg", data);
         }
     }
