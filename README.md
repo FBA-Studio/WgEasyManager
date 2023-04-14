@@ -71,7 +71,7 @@ Use method `.DownloadConfig()` for downloading .config file
 #### Parameters:
 - clientId - Client Id for downloading
 - path - path for saving .config file
-```
+```csharp
 client.DownloadConfig("xxxx-xxxx-xxxx-xxxx", "path/to/download");
 ```
 <i>Also you can download QR-Code with method `DownloadQrCode()` with parameters <b>clientId</b> and <b>path</b></i>
